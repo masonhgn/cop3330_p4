@@ -1,0 +1,3 @@
+/Users/masonhagan/CLionProjects/project4_grid/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/masonhagan/CLionProjects/project4_grid/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/masonhagan/CLionProjects/project4_grid/cmake-build-debug/CMakeFiles/project4_grid.dir

@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/masonhagan/CLionProjects/project4_grid/grid.cpp
+grid.h
+/Users/masonhagan/CLionProjects/project4_grid/grid.h
+cstdlib
+-
+ctime
+-
+
+/Users/masonhagan/CLionProjects/project4_grid/grid.h
+
+/Users/masonhagan/CLionProjects/project4_grid/main.cpp
+iostream
+-
+grid.cpp
+/Users/masonhagan/CLionProjects/project4_grid/grid.cpp
+
