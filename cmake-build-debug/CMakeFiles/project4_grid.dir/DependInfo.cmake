@@ -1,15 +1,23 @@
+
+# Consider dependencies only in project.
+set(CMAKE_DEPENDS_IN_PROJECT_ONLY OFF)
+
 # The set of languages for which implicit dependencies are needed:
 set(CMAKE_DEPENDS_LANGUAGES
   "CXX"
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/Users/masonhagan/CLionProjects/project4_grid/main.cpp" "/Users/masonhagan/CLionProjects/project4_grid/cmake-build-debug/CMakeFiles/project4_grid.dir/main.cpp.o"
+  "C:/Users/desktop/CLionProjects/cop3330_p4/main.cpp" "C:/Users/desktop/CLionProjects/cop3330_p4/cmake-build-debug/CMakeFiles/project4_grid.dir/main.cpp.obj"
   )
-set(CMAKE_CXX_COMPILER_ID "AppleClang")
+set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
+  )
+
+# The set of dependency files which are needed:
+set(CMAKE_DEPENDS_DEPENDENCY_FILES
   )
 
 # Targets to which this target links.

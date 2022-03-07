@@ -90,11 +90,11 @@ Grid::Grid(int r, int c, int mr, int mc, int d) {
 
     for (int row=0; row < r; row++) {
         for (int column = 0; column < c; column++) {
-            if (row == 0 || row == columns-1 || column == 0 || column == rows-1) {
-                gridMap[row][column] = '#';
-            } else gridMap[row][column] = '.';
+            gridMap[row][column] = '.';
         }
+        cout << "\n";
     }
+
     if (direction == NORTH) gridMap[moverRow][moverColumn] = '^';
     else if (direction == WEST) gridMap[moverRow][moverColumn] = '<';
     else if (direction == SOUTH) gridMap[moverRow][moverColumn] = 'v';
@@ -110,6 +110,7 @@ int Grid::GetNumCols() const {
 }
 
 void Grid::Display() const {
+    cout << "\n\n";
     for (int row = 0; row < rows; row++) {
         for (int column = 0; column < columns; column++) {
             cout << (char) gridMap[row][column] << "  ";
@@ -117,11 +118,7 @@ void Grid::Display() const {
     }
 }
 
-void Grid::addToPathStorage(int a, int b) {
-    pathStorage[currentSize][0] = a;
-    pathStorage[currentSize][1] = b;
-    currentSize++;
-}
+
 
 bool Grid::Move(int s) {
     if (s<0) return false;
@@ -130,7 +127,7 @@ bool Grid::Move(int s) {
             if (gridMap[i][moverColumn] == '#') { //if blocked then return false, exit loop
                 return false;
             } else { //else then add to path storage for later
-                addToPathStorage(moverRow, moverColumn);
+
 
             }
         }
@@ -156,7 +153,7 @@ bool Grid::Move(int s) {
             if (gridMap[i][moverColumn] == '#') { //if blocked then return false, exit loop
                 return false;
             } else { //else then add to path storage for later
-                addToPathStorage(moverRow, moverColumn);
+
             }
         }
         ///////////SOUTH MOVEMENT
@@ -178,7 +175,7 @@ bool Grid::Move(int s) {
             if (gridMap[moverRow][i] == '#') { //if blocked then return false, exit loop
                 return false;
             } else { //else then add to path storage for later
-                addToPathStorage(moverRow, moverColumn);
+
             }
         }
         //////////EAST MOVEMENT
@@ -195,12 +192,12 @@ bool Grid::Move(int s) {
 
         moverColumn += s;
     }
-    else if (direction == WEST) { /////////WEST
+    else { /////////WEST
         for (int i = moverColumn; i >= moverColumn-s; i--) {
             if (gridMap[moverRow][i] == '#') { //if blocked then return false, exit loop
                 return false;
             } else { //else then add to path storage for later
-                addToPathStorage(moverRow, moverColumn);
+
             }
         }
         /////////WEST MOVEMENT
@@ -217,6 +214,7 @@ bool Grid::Move(int s) {
 
         moverColumn -= s;
     }
+    return false;
 }
 
 void Grid::TurnLeft() {
@@ -343,3 +341,22 @@ void Grid::Grow(int gr, int gc) {
     }
 
 }
+
+bool Grid::PlaceBlock(int r, int c) {
+    if ((r<0 || c < 0 || r > rows || c > columns)
+        || ((char)gridMap[r][c] == '#' || (char)gridMap[r][c] == '0' || (char)gridMap[r][c] == '@')
+        ||(char)gridMap[r][c] == '^'||(char)gridMap[r][c] == 'v'||
+           (char)gridMap[r][c] == '<'||(char)gridMap[r][c] == '>') {
+        return false;
+    } else {
+        gridMap[r][c] = '#';
+        return true;
+        }
+    return false;
+    }
+
+    //if on mover make @
+    //else place block
+
+
+
