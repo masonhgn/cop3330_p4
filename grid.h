@@ -47,6 +47,7 @@ public:
     int GetNumRows() const;	// return number of rows in the grid
     int GetNumCols() const;	// return number of columns in the grid
 private:
+    void addToPathStorage(int a, int b);
     int rows, columns, moverRow, moverColumn, direction;
     int gridMap[MAX][MAX];
     int pathStorage[MAX][MAX];

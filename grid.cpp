@@ -12,17 +12,20 @@ Grid::Grid() {
     moverColumn = 0;
     direction = EAST;
     gridMap[0][0] = '>';
+    currentSize = 1;
 }
 
 
 
 Grid::Grid(int r, int c) {
+
     if (r < 3) rows = 3;
     else if (r > 40) rows = 40;
     else rows = r;
     if (c < 3) columns = 3;
     else if (c > 40) columns = 40;
     else columns = c;
+    currentSize = 1;
 
     moverRow = 0;
     moverColumn = 0;
@@ -65,9 +68,6 @@ Grid::Grid(int r, int c) {
     else gridMap[randomMoverX][randomMoverY] = '>';
 
 }
-
-
-
 
 Grid::Grid(int r, int c, int mr, int mc, int d) {
     if (r < 1) rows = 1;
@@ -117,52 +117,229 @@ void Grid::Display() const {
     }
 }
 
-
+void Grid::addToPathStorage(int a, int b) {
+    pathStorage[currentSize][0] = a;
+    pathStorage[currentSize][1] = b;
+    currentSize++;
+}
 
 bool Grid::Move(int s) {
-    if (direction == NORTH) {
+    if (s<0) return false;
+    if (direction == NORTH) { /////////////NORTH
         for (int i = moverRow; i >= moverRow-s; i--) {
             if (gridMap[i][moverColumn] == '#') { //if blocked then return false, exit loop
                 return false;
             } else { //else then add to path storage for later
-                pathStorage[i][0] = moverRow;
-                pathStorage[i][1] = moverColumn;
+                addToPathStorage(moverRow, moverColumn);
+
             }
-        } gridMap[moverRow-s][moverColumn] = '^', gridMap[moverRow][moverColumn] = '.';
+        }
+
+        ///////////NORTH MOVEMENT
+        if ((char)gridMap[moverRow-s][moverColumn] == '.') { //if it's empty...
+            gridMap[moverRow-s][moverColumn] = '^'; //replace new spot with mover
+        } else if ((char)gridMap[moverRow-s][moverColumn] == '0') { //if has item
+            gridMap[moverRow-s][moverColumn] = '@'; //replace with @
+        }
+        if ((char)gridMap[moverRow][moverColumn] == '^') { //if mover not on item
+            gridMap[moverRow][moverColumn] = '.'; //replace with empty
+        } else if ((char) gridMap[moverRow][moverColumn] == '@') { //else
+            gridMap[moverRow][moverColumn] = '0'; //replace with initial item
+        }
+
+
+        moverRow -= s;
         return true;
     }
-    else if (direction == SOUTH) {
+    else if (direction == SOUTH) { /////////SOUTH
         for (int i = moverRow; i <= moverRow+s; i++) {
             if (gridMap[i][moverColumn] == '#') { //if blocked then return false, exit loop
                 return false;
             } else { //else then add to path storage for later
-                pathStorage[i][0] = moverRow;
-                pathStorage[i][1] = moverColumn;
+                addToPathStorage(moverRow, moverColumn);
             }
-        } gridMap[moverRow+s][moverColumn] = 'v', gridMap[moverRow][moverColumn] = '.';
+        }
+        ///////////SOUTH MOVEMENT
+        if ((char)gridMap[moverRow+s][moverColumn] == '.') { //if it's empty...
+            gridMap[moverRow+s][moverColumn] = 'v'; //replace new spot with mover
+        } else if ((char)gridMap[moverRow+s][moverColumn] == '0') { //if has item
+            gridMap[moverRow+s][moverColumn] = '@'; //replace with @
+        }
+        if ((char)gridMap[moverRow][moverColumn] == 'v') { //if mover not on item
+            gridMap[moverRow][moverColumn] = '.'; //replace with empty
+        } else if ((char) gridMap[moverRow][moverColumn] == '@') { //else
+            gridMap[moverRow][moverColumn] = '0'; //replace with initial item
+        }
+
+        moverRow += s;
     }
-    else if (direction == EAST) {
+    else if (direction == EAST) { //////////EAST
         for (int i = moverColumn; i <= moverColumn+s; i++) {
             if (gridMap[moverRow][i] == '#') { //if blocked then return false, exit loop
                 return false;
             } else { //else then add to path storage for later
-                pathStorage[i][0] = moverRow;
-                pathStorage[i][1] = moverColumn;
+                addToPathStorage(moverRow, moverColumn);
             }
-        } gridMap[moverRow][moverColumn+s] = '>', gridMap[moverRow][moverColumn] = '.';
+        }
+        //////////EAST MOVEMENT
+        if ((char)gridMap[moverRow][moverColumn+s] == '.') { //if it's empty...
+            gridMap[moverRow][moverColumn+s] = '>'; //replace new spot with mover
+        } else if ((char)gridMap[moverRow][moverColumn+s] == '0') { //if has item
+            gridMap[moverRow][moverColumn+s] = '@'; //replace with @
+        }
+        if ((char)gridMap[moverRow][moverColumn] == '>') { //if mover not on item
+            gridMap[moverRow][moverColumn] = '.'; //replace with empty
+        } else if ((char) gridMap[moverRow][moverColumn] == '@') { //else
+            gridMap[moverRow][moverColumn] = '0'; //replace with initial item
+        }
+
+        moverColumn += s;
     }
-    else if (direction == WEST) {
+    else if (direction == WEST) { /////////WEST
         for (int i = moverColumn; i >= moverColumn-s; i--) {
             if (gridMap[moverRow][i] == '#') { //if blocked then return false, exit loop
                 return false;
             } else { //else then add to path storage for later
-                pathStorage[i][0] = moverRow;
-                pathStorage[i][1] = moverColumn;
+                addToPathStorage(moverRow, moverColumn);
             }
-        } gridMap[moverRow][moverColumn-s] = '<', gridMap[moverRow][moverColumn] = '.';
+        }
+        /////////WEST MOVEMENT
+        if ((char)gridMap[moverRow][moverColumn-s] == '.') { //if it's empty...
+            gridMap[moverRow][moverColumn-s] = '<'; //replace new spot with mover
+        } else if ((char)gridMap[moverRow][moverColumn-s] == '0') { //if has item
+            gridMap[moverRow][moverColumn-s] = '@'; //replace with @
+        }
+        if ((char)gridMap[moverRow][moverColumn] == '<') { //if mover not on item
+            gridMap[moverRow][moverColumn] = '.'; //replace with empty
+        } else if ((char) gridMap[moverRow][moverColumn] == '@') { //else
+            gridMap[moverRow][moverColumn] = '0'; //replace with initial item
+        }
+
+        moverColumn -= s;
+    }
+}
+
+void Grid::TurnLeft() {
+    if (direction == EAST) {
+        direction = NORTH;
+        gridMap[moverRow][moverColumn] = '^';
+    } else if (direction == NORTH) {
+        direction = WEST;
+        gridMap[moverRow][moverColumn] = '<';
+    } else if (direction == WEST) {
+        direction = SOUTH;
+        gridMap[moverRow][moverColumn] = 'v';
+    } else if (direction == SOUTH) {
+        direction = EAST;
+        gridMap[moverRow][moverColumn] = '>';
+    }
+}
+
+void Grid::TogglePath() {
+    if (path) {
+        for (int i = 0; i < currentSize; i++) {
+            //gridMap[pathStorage[i][0]][pathStorage[i][1]] = ' ';
+        }
+    }
+    else {
+        for (int i = 0; i < currentSize; i++) {
+            //gridMap[pathStorage[i][0]][pathStorage[i][1]] = '.';
+            cout << "pathstorage 0: " << pathStorage[i][0] << " pathstorage 1: " << pathStorage[i][1] << endl;
+        }
+    }
+}
+
+bool Grid::FrontIsClear() const {
+    if (direction == NORTH) {
+        if ((char)(gridMap[moverRow - 1][moverColumn]) == '.' || (char)(gridMap[moverRow - 1][moverColumn]) == '0') {
+            return true;
+        }
+    } else if (direction == SOUTH) {
+        if ((char)(gridMap[moverRow + 1][moverColumn]) == '.' || (char)(gridMap[moverRow + 1][moverColumn]) == '0') {
+            return true;
+        }
+    } else if (direction == EAST) {
+        if ((char)(gridMap[moverRow][moverColumn+1]) == '.' || (char)(gridMap[moverRow][moverColumn+1]) == '0') {
+            return true;
+        }
+    } else if (direction == WEST) {
+        if ((char)(gridMap[moverRow][moverColumn-1]) == '.' || (char)(gridMap[moverRow][moverColumn-1]) == '0') {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Grid::RightIsClear() const {
+    if (direction == WEST) {
+        if ((char)(gridMap[moverRow - 1][moverColumn]) == '.' || (char)(gridMap[moverRow - 1][moverColumn]) == '0') {
+            return true;
+        }
+    } else if (direction == EAST) {
+        if ((char)(gridMap[moverRow + 1][moverColumn]) == '.' || (char)(gridMap[moverRow + 1][moverColumn]) == '0') {
+            return true;
+        }
+    } else if (direction == NORTH) {
+        if ((char)(gridMap[moverRow][moverColumn+1]) == '.' || (char)(gridMap[moverRow][moverColumn+1]) == '0') {
+            return true;
+        }
+    } else if (direction == SOUTH) {
+        if ((char)(gridMap[moverRow][moverColumn-1]) == '.' || (char)(gridMap[moverRow][moverColumn-1]) == '0') {
+            return true;
+        }
+    }
+    return false;
+}
+
+int Grid::GetRow() const {
+    return moverRow;
+}
+
+int Grid::GetCol() const {
+    return moverColumn;
+}
+
+void Grid::PutDown() {
+    gridMap[moverRow][moverColumn] = '@';
+}
+
+bool Grid::PutDown(int r, int c) {
+    if (r < 0 || r > rows || c < 0 || c > columns) return false;
+    if ((char)(gridMap[r][c] == '>' || (char)gridMap[r][c] == 'v')
+    || ((char)gridMap[r][c] == '<' || (char)(gridMap[r][c] == '^'))) {
+        gridMap[r][c] = '@';
+        return true;
+    }
+    else if ((char)gridMap[r][c] == '#' ||(char)gridMap[r][c]=='0'
+        || (char) gridMap[r][c] == '@') {
+        return false;
+    }
+    else {
+        gridMap[r][c] = '0';
+        return true;
     }
 
+}
 
+bool Grid::PickUp() {
+    if ((char)gridMap[moverRow][moverColumn] == '@') {
+        if (direction == NORTH) gridMap[moverRow][moverColumn] = '^';
+        else if (direction == SOUTH) gridMap[moverRow][moverColumn] = 'v';
+        else if (direction == EAST) gridMap[moverRow][moverColumn] = '>';
+        else gridMap[moverRow][moverColumn] = '<';
+        return true;
+    }
+    return false;
+}
 
+void Grid::Grow(int gr, int gc) {
+    if ((rows + gr) > 40) {
+        rows = 40;
+    }else if ((columns + gc) > 40) {
+        columns = 40;
+    } else {
+        rows += gr;
+        columns += gc;
+    }
 
 }
